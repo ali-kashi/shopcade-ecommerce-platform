@@ -1,8 +1,29 @@
+// ۱. این خط را برای غیرفعال کردن prerendering استاتیک اضافه کنید
+export const dynamic = 'force-dynamic';
+
 export default async function orders() {
   const baseUrl = process.env.API_BASE_URL;
-  const res = await fetch(`${baseUrl}/api/orders`)
-  const orders = await res.json()
-  console.log(JSON.stringify(orders, null, 2));
+  let orders= [];
+  if (!baseUrl) { 
+    console.error("API_BASE_URL is not defined in environment variables!");
+  }
+  try {
+    const res = await fetch(`${baseUrl}/api/orders`, {
+      cache: 'no-store' // اطمینان از دریافت داده تازه
+    });
+
+    // ۲. چک کردن وضعیت پاسخ
+    if (!res.ok) {
+      console.error(`Error fetching orders: ${res.status} ${res.statusText}`);
+    }
+
+    orders = await res.json()
+  } catch (error) {
+    console.error("Failed to fetch orders:", error);
+  }
+  if (!orders || orders.length === 0) {
+    return <div className="p-10 text-center">هیچ سفارشی یافت نشد.</div>;
+  }
   return (
     <>
     <div>this orders page</div>
