@@ -90,4 +90,3 @@ shopcade-ecommerce-platform/
 
 ---
 ⭐ *Developed by [Ali Kashi](https://github.com/ali-kashi)*
-```
